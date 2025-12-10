@@ -39,7 +39,7 @@ node {
             sh """
                 curl -u admin:shivakuu \
                 --upload-file /var/lib/jenkins/workspace/Scripted-way-pipeline/target/maven-web-application.war \
-                "http://13.232.141.47:8080/manager/text/deploy?path=/maven-web-application&update=true"
+                "http://65.0.61.147:8080/manager/text/deploy?path=/maven-web-application&update=true"
             """
         }
 
