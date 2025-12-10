@@ -46,7 +46,7 @@
 <body>
 
 <header>
-    <h1>Welcome to SK DEVOPS AWS learning center HYD Jali's one</h1>
+    <h1>Welcome to Ashok's DEVOPS AWS learning center</h1>
     <h3>Training | Development | Consulting</h3>
 </header>
 
