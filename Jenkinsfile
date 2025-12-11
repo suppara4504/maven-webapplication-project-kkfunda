@@ -1,3 +1,4 @@
+/*
 node {
 
     // START NOTIFICATION
@@ -81,3 +82,92 @@ node {
     }
 
 }  // END NODE
+*/
+pipeline {
+
+    agent any
+
+    tools {
+        maven "maven"
+    }
+
+    options {
+        timestamps()   // Optional but helpful
+    }
+
+    // 🔔 Send START Notification
+
+    stages {
+
+        stage('Start Notification') {
+            steps {
+                slackSend channel: '#shivakuu',
+                          message: "🚀 *Build STARTED*\nJob: ${env.JOB_NAME}\nBuild: #${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}",
+                          color: '#439FE0'
+            }
+        }
+
+        stage('Git Checkout') {
+            steps {
+                git branch: 'Dev',
+                    url: 'https://github.com/suppara4504/maven-webapplication-project-kkfunda.git'
+            }
+        }
+
+        stage('Maven Compile') {
+            steps {
+                sh 'mvn compile'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+
+        /* stage('SQ Report') {
+            steps {
+                sh 'mvn sonar:sonar'
+            }
+        } */
+
+        stage('Nexus Integration') {
+            steps {
+                sh 'mvn clean deploy'
+            }
+        }
+
+        stage('Deploy to Tomcat') {
+            steps {
+                sh '''
+                    curl -u admin:shivakuu \
+                    --upload-file /var/lib/jenkins/workspace/Declarative-way/target/maven-web-application.war \
+                    "http://3.110.165.45:8080/manager/text/deploy?path=/maven-web-application&update=true"
+                '''
+            }
+        }
+    }
+
+    // 🔥 Post section handles SUCCESS, FAILURE, ALWAYS
+    post {
+
+        success {
+            slackSend channel: '#shivakuu',
+                      message: "🟢 *Build SUCCESS*\nJob: ${env.JOB_NAME}\nBuild: #${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}",
+                      color: 'good'
+        }
+
+        failure {
+            slackSend channel: '#shivakuu',
+                      message: "🔴 *Build FAILED*\nJob: ${env.JOB_NAME}\nBuild: #${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}",
+                      color: 'danger'
+        }
+
+        always {
+            slackSend channel: '#shivakuu',
+                      message: "📦 *Build FINISHED* (Success or Failure)\nJob: ${env.JOB_NAME}\nBuild: #${env.BUILD_NUMBER}\nURL: ${env.BUILD_URL}"
+        }
+    }
+}
+
