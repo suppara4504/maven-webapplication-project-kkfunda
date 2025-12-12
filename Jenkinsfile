@@ -126,11 +126,11 @@ pipeline {
             }
         }
 
-        /* stage('SQ Report') {
+         stage('SQ Report') {
             steps {
                 sh 'mvn sonar:sonar'
             }
-        } */
+        } 
 
         stage('Nexus Integration') {
             steps {
@@ -143,7 +143,7 @@ pipeline {
                 sh '''
                     curl -u admin:shivakuu \
                     --upload-file /var/lib/jenkins/workspace/Declarative-way/target/maven-web-application.war \
-                    "http://3.110.165.45:8080/manager/text/deploy?path=/maven-web-application&update=true"
+                    "http://3.110.207.121:8080/manager/text/deploy?path=/maven-web-application&update=true"
                 '''
             }
         }
