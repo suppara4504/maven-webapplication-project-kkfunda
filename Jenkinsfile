@@ -147,6 +147,11 @@ pipeline {
                 '''
             }
         }
+        stage('bsnl-qa') {
+          steps{
+              build job: 'bsnl-qa'
+          }
+        }
     }
 
     // 🔥 Post section handles SUCCESS, FAILURE, ALWAYS
