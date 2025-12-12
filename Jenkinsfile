@@ -147,9 +147,9 @@ pipeline {
                 '''
             }
         }
-        stage('bsnl-qa') {
+        stage('bsnl-qa-1') {
           steps{
-              build job: 'bsnl-qa'
+              build job: 'bsnl-qa-1'
           }
         }
     }
