@@ -109,7 +109,7 @@ pipeline {
 
         stage('Git Checkout') {
             steps {
-                git branch: 'Dev',
+                git branch: 'uat',
                     url: 'https://github.com/suppara4504/maven-webapplication-project-kkfunda.git'
             }
         }
